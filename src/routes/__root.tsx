@@ -8,11 +8,24 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 import appCss from "../styles.css?url";
 
-import type { QueryClient } from "@tanstack/react-query";
+import type { QueryClient, UseQueryOptions } from "@tanstack/react-query";
 
 interface MyRouterContext {
   queryClient: QueryClient;
 }
+
+const queryOptions: UseQueryOptions = {
+  queryKey: ["a", "b", "c"],
+  queryFn: async () => {
+    console.log("============================");
+    console.log("FETCHING DATA in ROOT");
+    console.log("============================");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return +new Date();
+  },
+  staleTime: 1000 * 10,
+  gcTime: 1000 * 10,
+};
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
@@ -37,6 +50,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
 
   shellComponent: RootDocument,
+  loader: async ({ context }) => {
+    context.queryClient.ensureQueryData(queryOptions);
+  },
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
