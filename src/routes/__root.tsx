@@ -50,8 +50,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
 
   shellComponent: RootDocument,
-  loader: async ({ context }) => {
+  loader: async ({ context, cause, route, location }) => {
     context.queryClient.ensureQueryData(queryOptions);
+  },
+  notFoundComponent: ({ isNotFound, routeId, data }) => {
+    console.log({ isNotFound, routeId, data });
+    return <div>Not Found</div>;
   },
 });
 
