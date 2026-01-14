@@ -9,10 +9,6 @@ import { routeTree } from "./routeTree.gen";
 export const getRouter = () => {
   const rqContext = TanstackQuery.getContext();
 
-  console.log("============================");
-  console.log("GETTING ROUTER");
-  console.log("============================");
-
   const router = createRouter({
     routeTree,
     context: {
